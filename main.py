@@ -35,6 +35,7 @@ def index():
 @app.route('/register', methods=['GET', 'POST'])
 def reqister():
     form = RegisterForm()
+    db_session.global_init('db/mars_explorer.db')
     if form.validate_on_submit():
         if form.password.data != form.password_again.data:
             return render_template('register.html', title='Регистрация',
@@ -47,8 +48,12 @@ def reqister():
                                    message="Такой пользователь уже есть")
         user = User(
             name=form.name.data,
+            surname=form.surname.data,
             email=form.email.data,
-            about=form.about.data
+            age=form.age.data,
+            position=form.position.data,
+            speciality=form.speciality.data
+
         )
         user.set_password(form.password.data)
         session.add(user)
